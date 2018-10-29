@@ -1,0 +1,11 @@
+---
+title: "inclass 10"
+author: "Ana Velasquez Munoz"
+date: "October 29, 2018"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
