@@ -27,8 +27,23 @@ Reading the data as an R object named homicides and creating a new column called
 
 ```{r loading data}
 homicides <- read_csv("data-homicide/homicide-data.csv") %>% 
-   unite(city_names, city, state, sep = ",")
+  unite(city_names, city, state, sep = ",")
 head(homicides)
+
+```
+
+Creating a dataframe called *unsolved* with one row per city that gives the total number of homicides for the city and the number of unsolved homicides (those for which the disposition is “Closed without arrest” or “Open/No arrest”).
+
+```{r unsolved data frame, echo = FALSE, results = 'markup'}
+unsolved <- homicides %>% 
+  select(city_names, disposition)%>% 
+  mutate(unsolved = disposition %in% c("Closed without arrest", 
+                                       "Open/No arrest")) %>% 
+  group_by(city_names) %>% 
+  summarize(n_homicides = n(),
+            unsolved = sum(unsolved))
+head(unsolved)
+
 
 ```
 
