@@ -1,0 +1,34 @@
+---
+title: 'ERHS: Homework 4'
+author: "Ana Velasquez Munoz"
+date: "November 4, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include = FALSE}
+library(knitr)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(broom)
+library(ggplot2)
+library(ggthemes)
+library(forcats)
+
+```
+
+##Estimating the proportion of unsolved homicides in each city
+
+Reading the data as an R object named homicides and creating a new column called city_name that combines the city and state
+```{r loading data}
+homicides <- read_csv("data-homicide/homicide-data.csv") %>% 
+   unite(city_names, city, state, sep = ",")
+head(homicides)
+
+```
+
+
