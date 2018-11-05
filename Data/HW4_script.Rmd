@@ -24,6 +24,7 @@ library(forcats)
 ##Estimating the proportion of unsolved homicides in each city
 
 Reading the data as an R object named homicides and creating a new column called city_name that combines the city and state
+
 ```{r loading data}
 homicides <- read_csv("data-homicide/homicide-data.csv") %>% 
    unite(city_names, city, state, sep = ",")
