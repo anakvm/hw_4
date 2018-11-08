@@ -25,7 +25,7 @@ library(ggthemes)
 
 ##Estimating the proportion of unsolved homicides in each city
 
-Reading the data as an R object named homicides and creating a new column called city_name that combines the city and state
+1. and 2. Reading the data as an R object named homicides and creating a new column called city_name that combines the city and state
 
 ```{r loading data}
 homicides <- read_csv("data-homicide/homicide-data.csv") %>% 
@@ -34,7 +34,7 @@ head(homicides)
 
 ```
 
-Creating a dataframe called *unsolved* with one row per city that gives the total number of homicides for the city and the number of unsolved homicides (those for which the disposition is “Closed without arrest” or “Open/No arrest”).
+3. Creating a dataframe called *unsolved* with one row per city that gives the total number of homicides for the city and the number of unsolved homicides.
 
 ```{r unsolved data frame, echo = FALSE, results = 'markup'}
 unsolved <- homicides %>% 
@@ -48,7 +48,7 @@ head(unsolved)
 
 ```
 
-4. Baltimore prop.test
+4. Baltimore prop.test and confidence interval
 
 ```{r, baltimore prop.test, echo = FALSE}
 
@@ -61,7 +61,28 @@ prop.test(c(unsolved$unsolved [3]),
 baltimore <-prop.test(c(unsolved$unsolved [3]),
           c(unsolved$n_homicides[3]),
           conf.level = 0.95, correct = TRUE)
-tidy(baltimore)
+kable(tidy(baltimore))
 
 ```
+
+5. Prop.test all cities and confidence interval using **purrr::map2**
+```{r, prop test all cities}
+
+unsolved <- homicides %>% 
+  select(city_names, disposition)%>% 
+  mutate(unsolved = disposition %in% c("Closed without arrest", 
+                                       "Open/No arrest")) %>% 
+  group_by(city_names) %>% 
+  summarize(n_homicides = n(),
+            unsolved = sum(unsolved)) %>% 
+  mutate(newcol = purrr::map2(unsolved, n_homicides,  
+                              ~ prop.test(.x, n = .y) %>% 
+                  {tibble(estimate = .[["estimate"]],
+                         ci_lower = .[["conf.int"]][[1]], 
+                         ci_upper = .[["conf.int"]][[2]])})) %>%
+  unnest()
+
+kable(head(unsolved))
+```
+
 
