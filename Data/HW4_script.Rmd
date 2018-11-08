@@ -84,5 +84,23 @@ unsolved <- homicides %>%
 
 kable(head(unsolved))
 ```
+6. Plot of unsolved homicides for all cities  using geom_errorbarh 
+
+```{r, plot all cities, fig.height = 9, fig.width= 6}
+
+unsolved %>% 
+  mutate(city_names = fct_reorder(city_names, estimate)) %>% 
+  ggplot() +
+  geom_errorbarh(aes(y = city_names, x = estimate, xmin = ci_lower, 
+                   xmax = ci_upper), height = 0, color = "white")+
+  geom_point( mapping = aes(y = city_names, x = estimate), 
+              size = 1, shape = 21, color = "white", fill = "white") +
+  theme_dark()+
+  scale_x_continuous(labels = percent)+
+  labs(x = "Percent of homicides that are unsolved", y = " ")+
+  ggtitle("Unsolved homicides by city",
+          subtitle = "Bars show 95% confidence interval")
+
+```
 
 
