@@ -1,5 +1,5 @@
 ---
-title: 'ERHS: Homework 4'
+title: 'ERHS 535: Homework 4'
 author: "Ana Velasquez Munoz"
 date: "November 4, 2018"
 output: pdf_document
@@ -23,9 +23,15 @@ library(ggthemes)
 
 ```
 
-##Estimating the proportion of unsolved homicides in each city
+##Part 1.
 
-1. and 2. Reading the data as an R object named homicides and creating a new column called city_name that combines the city and state
+Please check my github. README file is under the folder **Writing**
+
+[github ana] (https://github.com/anakvm/hw_4/commits/master)
+
+## Part 2: Estimating the proportion of unsolved homicides in each city
+
+## 1. and 2. Reading the data as an R object named homicides and creating a new column called city_name that combines the city and state
 
 ```{r loading data}
 homicides <- read_csv("data-homicide/homicide-data.csv") %>% 
@@ -34,7 +40,7 @@ head(homicides)
 
 ```
 
-3. Creating a dataframe called *unsolved* with one row per city that gives the total number of homicides for the city and the number of unsolved homicides.
+## 3. Creating a dataframe called *unsolved* with one row per city that gives the total number of homicides for the city and the number of unsolved homicides.
 
 ```{r unsolved data frame, echo = FALSE, results = 'markup'}
 unsolved <- homicides %>% 
@@ -48,7 +54,8 @@ head(unsolved)
 
 ```
 
-4. Baltimore prop.test and confidence interval
+
+## 4. Baltimore prop.test and confidence interval.
 
 ```{r, baltimore prop.test, echo = FALSE}
 
@@ -65,7 +72,9 @@ kable(tidy(baltimore))
 
 ```
 
-5. Prop.test all cities and confidence interval using **purrr::map2**
+
+## 5. Prop.test all cities and confidence interval using **purrr::map2**.
+
 ```{r, prop test all cities}
 
 unsolved <- homicides %>% 
@@ -84,7 +93,9 @@ unsolved <- homicides %>%
 
 kable(head(unsolved))
 ```
-6. Plot of unsolved homicides for all cities  using geom_errorbarh 
+
+
+## 6. Plot of unsolved homicides for all cities  using geom_errorbarh. 
 
 ```{r, plot all cities, fig.height = 9, fig.width= 6}
 
