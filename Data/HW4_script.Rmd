@@ -27,7 +27,7 @@ library(ggthemes)
 
 Please check my github. README file is under the folder **Writing**
 
-[github ana] (https://github.com/anakvm/hw_4/commits/master)
+[github ana] (https://github.com/anakvm/hw_4)
 
 ## Part 2: Estimating the proportion of unsolved homicides in each city
 
@@ -57,7 +57,7 @@ head(unsolved)
 
 ## 4. Baltimore prop.test and confidence interval.
 
-```{r, baltimore prop.test, echo = FALSE}
+```{r, baltimore prop.test, echo = FALSE, results = 'hide'}
 
 #baltimore prop test
 
@@ -68,6 +68,9 @@ prop.test(c(unsolved$unsolved [3]),
 baltimore <-prop.test(c(unsolved$unsolved [3]),
           c(unsolved$n_homicides[3]),
           conf.level = 0.95, correct = TRUE)
+
+```
+```{r, printing baltimore, echo = FALSE}
 kable(tidy(baltimore))
 
 ```
@@ -84,9 +87,10 @@ unsolved <- homicides %>%
   group_by(city_names) %>% 
   summarize(n_homicides = n(),
             unsolved = sum(unsolved)) %>% 
+  #applying prop thest to all cities, and making a statement to call for the estimates and confidence intervals in the data frame.
   mutate(newcol = purrr::map2(unsolved, n_homicides,  
                               ~ prop.test(.x, n = .y) %>% 
-                  {tibble(estimate = .[["estimate"]],
+                  {data.frame(estimate = .[["estimate"]],
                          ci_lower = .[["conf.int"]][[1]], 
                          ci_upper = .[["conf.int"]][[2]])})) %>%
   unnest()
