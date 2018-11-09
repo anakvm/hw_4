@@ -87,6 +87,7 @@ unsolved <- homicides %>%
   group_by(city_names) %>% 
   summarize(n_homicides = n(),
             unsolved = sum(unsolved)) %>% 
+  
   #applying prop thest to all cities, and making a statement to call for the estimates and confidence intervals in the data frame.
   mutate(newcol = purrr::map2(unsolved, n_homicides,  
                               ~ prop.test(.x, n = .y) %>% 
@@ -104,6 +105,7 @@ kable(head(unsolved))
 ```{r, plot all cities, fig.height = 9, fig.width= 6}
 
 unsolved %>% 
+  slice(-49) %>% #Removing Tulsa,AL
   mutate(city_names = fct_reorder(city_names, estimate)) %>% 
   ggplot() +
   geom_errorbarh(aes(y = city_names, x = estimate, xmin = ci_lower, 
